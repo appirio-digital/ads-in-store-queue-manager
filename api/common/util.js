@@ -117,6 +117,7 @@ async function buildQueue(store) {
       'country'
     ])
   );
+
   // normalizing store detail information and spiting multi picklist options in
   // shiftServiceType field
   allShifts = allShifts.map(shift => {
@@ -158,9 +159,9 @@ async function buildQueue(store) {
       //calculating EstimatedTime
       const appointmentStartTime = moment.utc(appointment.appointmentStartTime);
       let timeDiff =
-        APPOINTMENT_TYPE[appointment.appointmentType] -
+        (APPOINTMENT_TYPE[appointment.appointmentType] * 60) -
         Math.round(
-          moment.duration(timeNow.diff(appointmentStartTime)).asMinutes()
+          moment.duration(timeNow.diff(appointmentStartTime)).asSeconds()
         );
       timeDiff = timeDiff < -1 ? 0 : timeDiff;
       minQueue.enqueue(appointment, timeDiff);
@@ -183,7 +184,7 @@ async function buildQueue(store) {
     // enqueuing appointment
     minQueue.enqueue(
       appointment,
-      APPOINTMENT_TYPE[appointment.appointmentType]
+      APPOINTMENT_TYPE[appointment.appointmentType] * 60
     );
   });
 

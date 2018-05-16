@@ -23,7 +23,7 @@ async function getStoreWaitingTime(req, res, next) {
 
     return res.json({
       storeDetail,
-      waitingTime: minQueue.length
+      waitingTime: minQueue.length,
     });
   } catch (error) {
     next(error);
