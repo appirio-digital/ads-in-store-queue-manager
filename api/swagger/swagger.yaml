@@ -1,0 +1,257 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: T-Mobile Store Queue Manager
+# during dev, should point to your local machine
+host: localhost:8080
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /store/storeWaitingQueue:
+    x-swagger-router-controller: store
+    get:
+      summary: get representative queue details
+      operationId: getStoreWaitingQueue
+      parameters:
+      - in: query
+        name: store
+        description: store id
+        required: true
+        type: string
+      - in: query
+        name: representative
+        required: false
+        description: representative id
+        type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/StoreQueueResult"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /store/storeWaitingTime:
+    x-swagger-router-controller: store
+    get:
+      description: get store information with waiting queue details
+      operationId: getStoreWaitingTime
+      parameters:
+      - name: store
+        in: query
+        description: store id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/StoreWaitingResult"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /representative/attendCustomer:
+    x-swagger-router-controller: representative
+    post:
+      description: attend customer
+      operationId: attendCustomer
+      parameters:
+      - name: body
+        in: body
+        description: parameters required to complete booking 
+        required: true
+        schema:
+          $ref: "#/definitions/AttendCustomerRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SeccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /representative/closeCustomerRequest:
+    x-swagger-router-controller: representative
+    post:
+      description: close customer request
+      operationId: closeCustomerRequest
+      parameters:
+      - name: body
+        in: body
+        description: parameters required to complete booking 
+        required: true
+        schema:
+          $ref: "#/definitions/CloseCustomerRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SeccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /appointment/book:
+    x-swagger-router-controller: appointment
+    post:
+      description: book appointment
+      operationId: bookAppointment
+      parameters:
+      - name: body
+        in: body
+        description: parameters required to complete booking 
+        required: true
+        schema:
+          $ref: "#/definitions/BookAppointmentRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SeccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  Representative:
+    required:
+      - id
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  StoreDetail:
+    required:
+      - storeId
+      - storeName
+      - postalCode
+      - street
+      - city
+      - country
+    properties:
+      storeId:
+        type: string
+      storeName:
+        type: string
+      postalCode:
+        type: string
+      street:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+  
+  Queue:
+    required:
+      - appointmentId
+      - appointmentName
+      - appointmentStartTime
+      - appointmentStatus
+      - appointmentType
+      - representativeId
+    properties:
+      appointmentId:
+        type: string
+      appointmentName:
+        type: string
+      appointmentStartTime:
+        type: string
+      appointmentStatus:
+        type: string
+      appointmentType:
+        type: string
+      representativeId:
+        type: string
+  
+  Counter:
+    required:
+      - queue
+      - representative
+    properties:
+      queue:
+        type: array
+        items:
+          $ref: "#/definitions/Queue"
+      representative:
+        $ref: "#/definitions/Representative"
+        
+  Counters:
+    type: array
+    items:
+      $ref: "#/definitions/Counter"
+        
+  BookAppointmentRequest:
+    required:
+      - name
+      - serviceType
+    properties:
+      name:
+        type: string
+      serviceType:
+        type: string
+  CloseCustomerRequest:
+    required:
+      - appointment
+    properties:
+      appointment:
+        type: string
+      comment:
+        type: string
+  AttendCustomerRequest:
+    required:
+      - appointment
+      - representative
+    properties:
+      appointment:
+        type: string
+      representative:
+        type: string
+  StoreQueueResult:
+    required:
+      - storeDetail
+      - counters
+    properties:
+      storeDetail:
+        $ref: "#/definitions/StoreDetail"
+      counters:
+        $ref: "#/definitions/Counters"
+  StoreWaitingResult:
+    required:
+      - storeDetail
+      - waitingTime
+    properties:
+      storeDetail:
+        $ref: "#/definitions/StoreDetail"
+      waitingTime:
+        type: integer
+  SeccessResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
