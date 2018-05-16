@@ -1,6 +1,7 @@
-# ads-appointment-manager
+# ads-in-store-queue-manager
 
-* [Live Demo](https://ads-appointment-manager-dev.herokuapp.com/)
+* [Book Appointment Live Demo](https://ads-in-store-queue-manager-dev.herokuapp.com/001f400000LjaZfAAJ)
+* [Representative Live Demo](https://ads-in-store-queue-manager-dev.herokuapp.com/counter/001f400000LjaZfAAJ/003f400000J18dBAAR)
 
 ## Quick Setup
 
