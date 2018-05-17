@@ -159,7 +159,7 @@ async function buildQueue(store) {
       //calculating EstimatedTime
       const appointmentStartTime = moment.utc(appointment.appointmentStartTime);
       let timeDiff =
-        (APPOINTMENT_TYPE[appointment.appointmentType] * 60) -
+        APPOINTMENT_TYPE[appointment.appointmentType] * 60 -
         Math.round(
           moment.duration(timeNow.diff(appointmentStartTime)).asSeconds()
         );
