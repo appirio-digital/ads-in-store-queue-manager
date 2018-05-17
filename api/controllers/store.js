@@ -8,11 +8,6 @@ module.exports = {
 async function getStoreWaitingTime(req, res, next) {
   try {
     const { store } = req.query;
-
-    if (!store) {
-      next(new Error('Store Id required parameter.'));
-    }
-
     const { storeDetail, empQueues } = await buildQueue(store);
 
     // finding smallest waiting queue in store
