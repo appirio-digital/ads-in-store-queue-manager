@@ -22,17 +22,24 @@ export default class Counter extends React.Component {
     const response = await this.fetchStoreQueue({ store, representative });
     if (response && response.storeDetail) {
       const { storeDetail, counters } = response;
-      const { queue, representative } = counters;
+      if (counters == null) {
+        notify.show('Your shift is over.', 'info');
+        this.setState({
+          isLoading: false
+        });
+      } else {
+        const { queue, representative } = counters;
 
-      if (queue.length == 0) {
-        notify.show('Your queue is empty.', 'info');
+        if (queue.length == 0) {
+          notify.show('Your queue is empty.', 'info');
+        }
+        this.setState({
+          isLoading: false,
+          storeDetail,
+          representative,
+          queue
+        });
       }
-      this.setState({
-        isLoading: false,
-        storeDetail,
-        representative,
-        queue
-      });
     } else {
       notify.show(
         'Sorry we are not able to process your request. Please try again.',
