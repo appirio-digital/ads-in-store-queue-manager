@@ -43,10 +43,19 @@ export default class Root extends React.Component {
       this.setState({
         isLoading: false
       });
-      notify.show('Your appointment has been booked.', 'success');
+      notify.show(
+        <span>
+          <i className="material-icons">done_outline</i> You have been add to
+          the queue.
+        </span>,
+        'info'
+      );
     } else {
       notify.show(
-        'Sorry we are not able to process your request. Please try again later.',
+        <span>
+          <i className="material-icons large">error</i>Sorry we are not able to
+          process your request. Please try again later.
+        </span>,
         'error'
       );
       this.setState({
@@ -98,7 +107,20 @@ export default class Root extends React.Component {
             />
           </div>}
         <Header storeDetail={storeDetail} />
-        <Notifications />
+        <Notifications
+          options={{
+            colors: {
+              error: {
+                color: '#FFFFFF',
+                backgroundColor: '#ed0b22'
+              },
+              info: {
+                color: '#FFFFFF',
+                backgroundColor: '#4990E2'
+              }
+            }
+          }}
+        />
         <div className="container">
           <div className="main-container">
             <WaitingTime waitingTime={waitingTime} />

@@ -24,6 +24,9 @@ export default class Counter extends React.Component {
       const { storeDetail, counters } = response;
       const { queue, representative } = counters;
 
+      if (queue.length == 0) {
+        notify.show('Your queue is empty.', 'info');
+      }
       this.setState({
         isLoading: false,
         storeDetail,
@@ -143,7 +146,20 @@ export default class Counter extends React.Component {
             />
           </div>}
         <Header storeDetail={storeDetail} />
-        <Notifications />
+        <Notifications
+          options={{
+            colors: {
+              error: {
+                color: '#FFFFFF',
+                backgroundColor: '#ed0b22'
+              },
+              info: {
+                color: '#FFFFFF',
+                backgroundColor: '#4990E2'
+              }
+            }
+          }}
+        />
         <div className="container">
           <div className="main-container">
             {representative.name &&
