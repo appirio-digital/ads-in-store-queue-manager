@@ -8,8 +8,14 @@ module.exports = {
 async function getStoreWaitingTime(req, res, next) {
   try {
     const { store } = req.query;
-    const { storeDetail, empQueues } = await buildQueue(store);
+    const { storeDetail, empQueues, message } = await buildQueue(store);
 
+    if (message) {
+      return res.json({
+        message,
+        storeDetail
+      });
+    }
     // finding smallest waiting queue in store
     const minQueue = empQueues.reduce(
       (min, current) => (min.length < current.length ? min : current),

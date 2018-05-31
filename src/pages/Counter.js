@@ -30,7 +30,7 @@ export default class Counter extends React.Component {
       } else {
         const { queue, representative } = counters;
 
-        if (queue.length == 0) {
+        if (queue.length === 0) {
           notify.show('Your queue is empty.', 'info');
         }
         this.setState({
