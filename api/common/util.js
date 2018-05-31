@@ -94,12 +94,12 @@ async function buildQueue(store) {
       '>',
       timeNow.format('HH:mm:ss')
     );
-
   if (allShifts.length === 0) {
     return {
       message: 'no representative available at store.'
     };
   }
+
   // segregating store details
   const [{ storeId, storeName, postalCode, street, city, country }] = uniqBy(
     allShifts,
